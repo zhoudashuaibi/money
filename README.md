@@ -100,40 +100,6 @@
 - 你当前阶段更需要“业务一致性 + 中高频时序查询 + 快速迭代”
 - Timescale 足够支撑 MVP 到中期；后续极大规模再引入 ClickHouse 做 OLAP 专仓
 
-## 3.4 登录与用户管理（按你新需求补充）
-目标：**仅管理员可创建用户，普通用户只能登录与使用平台功能**。
-
-推荐实现（NestJS）：
-- `auth` 模块：登录、刷新令牌、登出、密码更新
-- `users` 模块：用户 CRUD（仅管理员可创建/禁用）
-- 暂不单独建设 RBAC 模块：仅保留“是否管理员”的简单权限判断
-
-建议最小 API：
-1. `POST /auth/login`（用户名/邮箱 + 密码）
-2. `POST /auth/refresh`（刷新 access token）
-3. `POST /auth/logout`（可选：令牌拉黑）
-4. `POST /admin/users`（**仅 admin**，创建用户）
-5. `PATCH /admin/users/:id/status`（**仅 admin**，启用/禁用）
-6. `GET /admin/users`（**仅 admin**，分页查看）
-
-权限规则（MVP，简化版）：
-- `is_admin = true`：创建用户、重置密码、禁用账户、查看用户列表
-- `is_admin = false`：登录、修改自己的密码、查看和使用业务功能
-
-登录安全建议：
-- 密码哈希：`argon2`（优先）或 `bcrypt`
-- 令牌：JWT（短期 access token + 中期 refresh token）
-- 关键操作审计：记录管理员创建用户、重置密码、禁用账号
-- 防爆破：登录限流（IP + 用户维度）
-
-数据库最小表设计：
-- `users`：`id`, `email`, `username`, `password_hash`, `status`, `last_login_at`, `created_at`
-- `audit_logs`：`actor_user_id`, `action`, `target_type`, `target_id`, `payload`, `created_at`
-
-初始化策略：
-- 系统首次部署通过环境变量注入“超级管理员”账号；
-- 之后所有新用户只能由管理员在后台创建（满足你“暂时只能管理员创建用户”的要求）。
-
 ---
 
 ## 4. 多智能体协作方案（核心）
@@ -168,7 +134,7 @@
 
 ### 阶段 3（第 9-12 周）
 - 港股接入、市场情绪与商品情报
-- 多 LLM 网关
+- 多语言与多 LLM 网关
 - 压力测试 + AI 诊断
 
 ---
