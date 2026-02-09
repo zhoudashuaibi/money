@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__zread__get_repo_structure",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "mcp__web-reader__webReader",
+      "Bash(curl:*)",
+      "Bash(python:*)",
+      "Bash(where nest:*)",
+      "Bash(nest new:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx --prefix \"C:/Users/14527/Desktop/money/api\" tsc --noEmit --project \"C:/Users/14527/Desktop/money/api/tsconfig.json\":*)",
+      "Bash(pip install:*)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(test:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npm config set:*)",
+      "Bash(npx next build)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(node -e \"const p=require\\(''/c/Users/14527/Desktop/money/api/package.json''\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\)\")",
+      "Bash(docker --version:*)",
+      "Bash(docker compose version:*)",
+      "Bash(docker compose build:*)",
+      "Bash(docker info:*)",
+      "Bash(cat:*)",
+      "Bash(powershell:*)",
+      "Bash(docker pull:*)",
+      "Bash(docker tag:*)",
+      "Bash(docker compose up:*)",
+      "Bash(docker images:*)",
+      "Bash(docker compose:*)",
+      "Bash(docker ps:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)"
+    ]
+  }
+}

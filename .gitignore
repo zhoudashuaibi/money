@@ -1,0 +1,27 @@
+# 环境变量（包含密钥，不应提交）
+.env
+.env.local
+.env.production
+
+# 操作系统
+.DS_Store
+Thumbs.db
+nul
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Node
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Docker 数据卷
+pgdata/
