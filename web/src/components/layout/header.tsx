@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -43,7 +44,9 @@ export function Header() {
             {user?.nickname || "未登录"}
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>个人设置</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/settings">个人设置</Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={logout} className="text-destructive">
             退出登录

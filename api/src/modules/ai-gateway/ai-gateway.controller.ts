@@ -6,6 +6,8 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { ApiResponse } from '../../common/dto/api-response.dto';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { AnalyticsService } from '../analytics/analytics.service';
+import { AuthService } from '../auth/auth.service';
+import { LlmCustomConfig } from './providers/llm.provider';
 
 @Controller('ai')
 @UseGuards(JwtAuthGuard)
@@ -13,6 +15,7 @@ export class AiGatewayController {
   constructor(
     private aiGatewayService: AiGatewayService,
     private analyticsService: AnalyticsService,
+    private authService: AuthService,
   ) {}
 
   @Post('analyze')
@@ -20,7 +23,18 @@ export class AiGatewayController {
     @Body() dto: AnalysisRequestDto,
     @CurrentUser('id') userId: string,
   ) {
-    const results = await this.aiGatewayService.runAnalysis(dto.symbol);
+    // 如果指定了用户自定义 LLM 配置，查询完整配置
+    let customConfig: LlmCustomConfig | undefined;
+    if (dto.llmConfigId) {
+      const llmConfig = await this.authService.getLlmConfigRaw(userId, dto.llmConfigId);
+      customConfig = {
+        apiKey: llmConfig.apiKey,
+        baseUrl: llmConfig.baseUrl,
+        model: llmConfig.model,
+      };
+    }
+
+    const results = await this.aiGatewayService.runAnalysis(dto.symbol, userId, customConfig);
 
     // 提取决策结果
     const decision = results.find((r) => r.agent === 'decision');

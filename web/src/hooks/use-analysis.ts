@@ -17,11 +17,17 @@ export interface AnalysisResponse {
   results: AgentResult[];
 }
 
+/** 分析请求参数 */
+export interface AnalysisParams {
+  symbol: string;
+  llmConfigId?: string;
+}
+
 /** 触发 AI 分析 */
 export function useRunAnalysis() {
   return useMutation({
-    mutationFn: async (symbol: string) => {
-      const { data } = await api.post("/ai/analyze", { symbol });
+    mutationFn: async (params: AnalysisParams) => {
+      const { data } = await api.post("/ai/analyze", params);
       return data.data as AnalysisResponse;
     },
   });

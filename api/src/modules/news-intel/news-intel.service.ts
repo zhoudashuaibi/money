@@ -22,13 +22,25 @@ export class NewsIntelService {
     this.baseUrl = this.configService.get<string>('tavily.baseUrl') || 'https://api.tavily.com';
   }
 
-  /** 通过 Tavily 搜索新闻 */
-  async searchNews(dto: NewsSearchDto) {
+  /** 通过 Tavily 搜索新闻 - 支持用户自定义配置 */
+  async searchNews(
+    dto: NewsSearchDto,
+    userTavilyConfig?: { apiKey: string; baseUrl?: string },
+  ) {
+    // 优先使用用户配置，否则回退到系统配置
+    const apiKey = userTavilyConfig?.apiKey || this.apiKey;
+    const baseUrl = userTavilyConfig?.baseUrl || this.baseUrl;
+
+    if (!apiKey) {
+      this.logger.warn('Tavily API Key 未配置，跳过新闻搜索');
+      return { results: [], answer: '' };
+    }
+
     try {
       const { data } = await axios.post(
-        `${this.baseUrl}/search`,
+        `${baseUrl}/search`,
         {
-          api_key: this.apiKey,
+          api_key: apiKey,
           query: dto.query,
           search_depth: 'basic',
           max_results: dto.maxResults || 5,

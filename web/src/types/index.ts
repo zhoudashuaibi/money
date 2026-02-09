@@ -50,6 +50,18 @@ export interface AnalysisRecord {
   createdAt: string;
 }
 
+// 用户 LLM 配置
+export interface LlmConfig {
+  id: string;
+  providerName: string;
+  apiKey: string; // 脱敏后的
+  baseUrl: string;
+  model: string;
+  isDefault: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 // 预警规则
 export interface AlertRule {
   id: string;

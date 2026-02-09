@@ -36,7 +36,11 @@
       "Bash(docker compose:*)",
       "Bash(docker ps:*)",
       "Bash(git add:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: 智能投研平台 MVP 全栈实现与 Docker 一键部署\n\n- api: NestJS 后端（Auth/MarketData/NewsIntel/AiGateway/Analytics/Alerting 模块）\n- sidecar: FastAPI + AkShare A股行情数据服务\n- web: Next.js 16 前端（Dashboard/Analysis/History/Watchlist/Market 页面）\n- docker-compose: 5 服务编排（PostgreSQL/Redis/Sidecar/API/Web）\n- 配置: .env.example 模板 + .gitignore 安全排除\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push)",
+      "Bash(ls:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }

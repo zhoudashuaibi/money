@@ -7,19 +7,25 @@ import { Brain, Loader2 } from "lucide-react";
 import { useRunAnalysis } from "@/hooks/use-analysis";
 import { useMarketStore } from "@/stores/market-store";
 import { AgentResultCard } from "@/components/analysis/agent-result-card";
+import { useLlmConfigs } from "@/hooks/use-llm-config";
 import type { AgentResult } from "@/hooks/use-analysis";
 
 export default function AnalysisPage() {
   const [input, setInput] = useState("");
+  const [selectedConfigId, setSelectedConfigId] = useState("");
   const { activeSymbol } = useMarketStore();
   const analysisMutation = useRunAnalysis();
+  const { data: llmConfigs } = useLlmConfigs();
 
   // 优先使用输入框的值，其次使用全局 activeSymbol
   const symbol = input.trim() || activeSymbol;
 
   const handleAnalyze = () => {
     if (!symbol) return;
-    analysisMutation.mutate(symbol);
+    analysisMutation.mutate({
+      symbol,
+      llmConfigId: selectedConfigId || undefined,
+    });
   };
 
   const results: AgentResult[] = analysisMutation.data?.results ?? [];
@@ -33,7 +39,7 @@ export default function AnalysisPage() {
       <h1 className="text-2xl font-bold">AI 多智能体分析</h1>
 
       {/* 输入区域 */}
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-2 items-center flex-wrap">
         <Input
           placeholder={activeSymbol || "输入股票代码，如 000001"}
           value={input}
@@ -41,6 +47,19 @@ export default function AnalysisPage() {
           onKeyDown={(e) => e.key === "Enter" && handleAnalyze()}
           className="w-56"
         />
+        <select
+          value={selectedConfigId}
+          onChange={(e) => setSelectedConfigId(e.target.value)}
+          className="h-9 rounded-md border border-input bg-background px-3 text-sm"
+        >
+          <option value="">系统默认模型</option>
+          {llmConfigs?.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.providerName} / {c.model}
+              {c.isDefault ? " (默认)" : ""}
+            </option>
+          ))}
+        </select>
         <Button
           onClick={handleAnalyze}
           disabled={!symbol || analysisMutation.isPending}
